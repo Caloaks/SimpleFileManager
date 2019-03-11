@@ -12,6 +12,7 @@
 		8613578622365BFE00408C09 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8613578422365BFE00408C09 /* Main.storyboard */; };
 		8613578822365C0200408C09 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8613578722365C0200408C09 /* Assets.xcassets */; };
 		8613578B22365C0200408C09 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8613578922365C0200408C09 /* LaunchScreen.storyboard */; };
+		861357932236679D00408C09 /* FileManagerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861357922236679D00408C09 /* FileManagerService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		8613578722365C0200408C09 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8613578A22365C0200408C09 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8613578C22365C0200408C09 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		861357922236679D00408C09 /* FileManagerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 			children = (
 				8613578022365BFE00408C09 /* AppDelegate.swift */,
 				8613578222365BFE00408C09 /* ViewController.swift */,
+				861357922236679D00408C09 /* FileManagerService.swift */,
 				8613578422365BFE00408C09 /* Main.storyboard */,
 				8613578722365C0200408C09 /* Assets.xcassets */,
 				8613578922365C0200408C09 /* LaunchScreen.storyboard */,
@@ -137,6 +140,7 @@
 			files = (
 				8613578322365BFE00408C09 /* ViewController.swift in Sources */,
 				8613578122365BFE00408C09 /* AppDelegate.swift in Sources */,
+				861357932236679D00408C09 /* FileManagerService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
