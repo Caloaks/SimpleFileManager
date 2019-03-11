@@ -65,6 +65,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        <#code#>
+    }
+    
     @objc func barItemFilePressed(_ sender: Any?) {
         let alert = UIAlertController(title: "File name", message: "", preferredStyle: .alert)
         
