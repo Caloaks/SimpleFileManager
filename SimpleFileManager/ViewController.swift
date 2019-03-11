@@ -23,10 +23,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
+//        self.fileManager.createDirectory(atPath: "Directory 2")
         elements = fileManager.listFiles()
         
-        let createButton = UIBarButtonItem(image: UIImage(named: "addFile"), style: .plain, target: self, action: #selector(barItemCreatePressed(_:)))
-        self.navigationItem.rightBarButtonItem = createButton
+        let createDirectoryButton = UIBarButtonItem(image: UIImage(named: "addDirectory"), style: .plain, target: self, action: #selector(barItemDirectoryPressed(_:)))
+        let createFileButton = UIBarButtonItem(image: UIImage(named: "addFile"), style: .plain, target: self, action: #selector(barItemFilePressed(_:)))
+        self.navigationItem.rightBarButtonItems = [createFileButton, createDirectoryButton]
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -63,13 +65,40 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
-    @objc func barItemCreatePressed(_ sender: Any?) {
+    @objc func barItemFilePressed(_ sender: Any?) {
         let alert = UIAlertController(title: "File name", message: "", preferredStyle: .alert)
         
         alert.addTextField()
         let createAction = UIAlertAction(title: "Create", style: UIAlertAction.Style.default) {
             UIAlertAction in
-            self.fileManager.createFile(withName: (alert.textFields?.first?.text)!)
+            guard let name = alert.textFields?.first?.text else {
+                print("text field was an empty")
+                return
+            }
+            self.fileManager.createFile(withName: name)
+            self.elements = self.fileManager.listFiles()
+            self.tableView.reloadData()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel)
+        
+        alert.addAction(cancelAction)
+        alert.addAction(createAction)
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    @objc func barItemDirectoryPressed(_ sender: Any?) {
+        let alert = UIAlertController(title: "Directory name", message: "", preferredStyle: .alert)
+        
+        alert.addTextField()
+        let createAction = UIAlertAction(title: "Create", style: UIAlertAction.Style.default) {
+            UIAlertAction in
+            guard let name = alert.textFields?.first?.text else {
+                print("text field was an empty")
+                return
+            }
+            print(name)
+            self.fileManager.createDirectory(atPath: name)
             self.elements = self.fileManager.listFiles()
             self.tableView.reloadData()
         }

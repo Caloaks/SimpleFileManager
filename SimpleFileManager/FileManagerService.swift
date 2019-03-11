@@ -47,11 +47,12 @@ class FileManagerService {
     }
     
     func createDirectory(atPath: String = "") {
-        var docsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        if atPath != "" {
-            docsURL.appendPathComponent(atPath)
+        if atPath == "" {
+            return
         }
+        let docsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let newDir = docsURL.appendingPathComponent(atPath)
+        print(newDir)
         try? FileManager.default.createDirectory(at: newDir, withIntermediateDirectories: false, attributes: nil)
     }
     
