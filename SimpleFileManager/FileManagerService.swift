@@ -13,8 +13,10 @@ class FileManagerService {
     private let text = "Hello world!"
     
     func listFiles(in directory: String = "") -> [(Types, String)] {
-        let docsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let docsURL = docsPath[0]
+        var docsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        if directory != "" {
+            docsURL.appendPathComponent(directory)
+        }
         let docs = try? FileManager.default.contentsOfDirectory(atPath: docsURL.path)
         
         var elements = [(Types, String)]()
@@ -44,14 +46,20 @@ class FileManagerService {
         return elements
     }
     
-    func createDirectory(atPath: String) {
-        let docsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    func createDirectory(atPath: String = "") {
+        var docsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        if atPath != "" {
+            docsURL.appendPathComponent(atPath)
+        }
         let newDir = docsURL.appendingPathComponent(atPath)
         try? FileManager.default.createDirectory(at: newDir, withIntermediateDirectories: false, attributes: nil)
     }
     
     func createFile(withName name: String, atPath: String = "") {
-        let docsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        var docsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        if atPath != "" {
+            docsURL.appendPathComponent(atPath)
+        }
         let filePath = docsURL.path + "/" + name
         print(filePath)
         let content = text.data(using: .utf8)
@@ -60,7 +68,10 @@ class FileManagerService {
     }
     
     func deleteFile(withName name: String, atPath: String = "") {
-        let docsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        var docsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        if atPath != "" {
+            docsURL.appendPathComponent(atPath)
+        }
         let filePath = docsURL.appendingPathComponent(name)
         
         try? FileManager.default.removeItem(at: filePath)
