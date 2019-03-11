@@ -35,12 +35,12 @@ class FileManagerService {
         elements.sort(by: {
             (firstElem, secondElem) in
             if (firstElem.0 == .file) && (secondElem.0 == .directory) {
-                return true
-            } else if (firstElem.1 < secondElem.1) {
-                return true
+                return false
+            } else if (firstElem.1 > secondElem.1) && (firstElem.0 == secondElem.0) {
+                return false
             }
             
-            return false
+            return true
         })
         
         return elements

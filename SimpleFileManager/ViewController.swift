@@ -23,7 +23,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
-        
+        fileManager.createFile(withName: "Arnold")
         elements = fileManager.listFiles()
     }
     
@@ -53,6 +53,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         return cell
     }
 
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            fileManager.deleteFile(withName: elements![indexPath.item].1)
+            elements = fileManager.listFiles()
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
 
 }
 
