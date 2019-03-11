@@ -59,4 +59,11 @@ class FileManagerService {
         FileManager.default.createFile(atPath: filePath, contents: content, attributes: nil)
     }
     
+    func deleteFile(withName name: String, atPath: String = "") {
+        let docsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let filePath = docsURL.appendingPathComponent(name)
+        
+        try? FileManager.default.removeItem(at: filePath)
+    }
+    
 }
