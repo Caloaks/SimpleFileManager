@@ -78,4 +78,22 @@ class FileManagerService {
         try? FileManager.default.removeItem(at: filePath)
     }
     
+    func readFile(at path: String, withName name: String) -> String {
+        var filePath: String
+        if path == "" {
+            filePath = "/\(name)"
+        } else {
+            filePath = path + name
+        }
+        
+        filePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].path + filePath
+        
+        guard let fileContent = FileManager.default.contents(atPath: filePath),
+            let fileContentEncoded = String(bytes: fileContent, encoding: .utf8) else {
+                return ""
+        }
+        
+        return fileContentEncoded
+    }
+    
 }

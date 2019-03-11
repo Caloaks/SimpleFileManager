@@ -83,19 +83,28 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let (type, name) = elements![indexPath.item]
+        let (type, nameElem) = elements![indexPath.item]
         
         if type == .directory {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "mainVC") as! ViewController
             
-            vc.name = name
+            vc.name = nameElem
             if let path = path {
-                vc.path = "\(path)/\(name)/"
+                vc.path = "\(path)/\(nameElem)/"
             } else {
-                vc.path = "/\(name)/"
+                vc.path = "/\(nameElem)/"
             }
             
+            self.show(vc, sender: self)
+        } else if type == .file {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "textView") as! FileViewController
+            if path == nil {
+                path = ""
+            }
+            vc.name = nameElem
+            vc.text = fileManager.readFile(at: path!, withName: nameElem)
             self.show(vc, sender: self)
         }
     }
