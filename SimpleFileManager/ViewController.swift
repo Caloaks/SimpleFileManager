@@ -23,8 +23,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
-        fileManager.createFile(withName: "Arnold")
         elements = fileManager.listFiles()
+        
+        let createButton = UIBarButtonItem(image: UIImage(named: "addFile"), style: .plain, target: self, action: #selector(barItemCreatePressed(_:)))
+        self.navigationItem.rightBarButtonItem = createButton
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -59,6 +61,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             elements = fileManager.listFiles()
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
+    }
+    
+    @objc func barItemCreatePressed(_ sender: Any?) {
+        print("pressed")
     }
 
 }
