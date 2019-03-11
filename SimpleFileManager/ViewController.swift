@@ -44,6 +44,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         let (type, name) = elements![indexPath.item]
         cell.textLabel?.text = name
+        if type == .file {
+            cell.imageView?.image = UIImage(named: "file")
+        } else {
+            cell.imageView?.image = UIImage(named: "directory")
+        }
         
         return cell
     }
