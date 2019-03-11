@@ -64,7 +64,21 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     @objc func barItemCreatePressed(_ sender: Any?) {
-        print("pressed")
+        let alert = UIAlertController(title: "File name", message: "", preferredStyle: .alert)
+        
+        alert.addTextField()
+        let createAction = UIAlertAction(title: "Create", style: UIAlertAction.Style.default) {
+            UIAlertAction in
+            self.fileManager.createFile(withName: (alert.textFields?.first?.text)!)
+            self.elements = self.fileManager.listFiles()
+            self.tableView.reloadData()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel)
+        
+        alert.addAction(cancelAction)
+        alert.addAction(createAction)
+        
+        self.present(alert, animated: true, completion: nil)
     }
 
 }
