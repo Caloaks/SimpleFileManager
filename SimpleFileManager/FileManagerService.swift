@@ -12,14 +12,25 @@ class FileManagerService {
     
     private let text = "Hello world!"
     
-    func listFiles(in directory: String = "") {
+    func listFiles(in directory: String = "") -> [(Types, String)] {
         let docsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let docsURL = docsPath[0]
+        let docs = try? FileManager.default.contentsOfDirectory(atPath: docsURL.path)
         
-        print(FileManager.default.contents(atPath: docsURL.path))
-        for doc in docsPath {
-            print(doc.baseURL)
+        var elements = [(Types, String)]()
+        
+        for doc in docs! {
+            // Убираем из выдачи скрытый файл .DS_Store
+            if !doc.contains(".DS_Store") {
+                if let _ = try? FileManager.default.contentsOfDirectory(atPath: docsURL.path + "/\(doc)") {
+                    elements.append((.directory, doc))
+                } else {
+                    elements.append((.file, doc))
+                }
+            }
         }
+        
+        return elements
     }
     
     func createDirectory(atPath: String) {

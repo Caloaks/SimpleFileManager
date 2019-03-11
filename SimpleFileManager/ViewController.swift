@@ -14,9 +14,6 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        fileManager.createFile(withName: "File 1")
-        fileManager.listFiles()
     }
 
 
