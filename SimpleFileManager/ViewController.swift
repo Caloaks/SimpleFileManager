@@ -12,6 +12,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     @IBOutlet weak var tableView: UITableView!
     
+    var name: String?
+    var path: String?
+    
     private let fileManager = FileManagerService()
     private let reuseIdentifier = "TableCell"
     private var elements: [(Types, String)]?
@@ -19,12 +22,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if let name = name,
+            let path = path {
+            elements = fileManager.listFiles(in: path)
+            self.title = name
+        } else {
+            elements = fileManager.listFiles()
+        }
+        
         self.tableView.frame = self.view.frame
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
-//        self.fileManager.createDirectory(atPath: "Directory 2")
-        elements = fileManager.listFiles()
         
         let createDirectoryButton = UIBarButtonItem(image: UIImage(named: "addDirectory"), style: .plain, target: self, action: #selector(barItemDirectoryPressed(_:)))
         let createFileButton = UIBarButtonItem(image: UIImage(named: "addFile"), style: .plain, target: self, action: #selector(barItemFilePressed(_:)))
@@ -59,14 +68,36 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            fileManager.deleteFile(withName: elements![indexPath.item].1)
-            elements = fileManager.listFiles()
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            if let name = name,
+                let path = path {
+                fileManager.deleteFile(withName: path + elements![indexPath.item].1)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                elements = fileManager.listFiles(in: path)
+                self.title = name
+            } else {
+                fileManager.deleteFile(withName: elements![indexPath.item].1)
+                elements = fileManager.listFiles()
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        <#code#>
+        let (type, name) = elements![indexPath.item]
+        
+        if type == .directory {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "mainVC") as! ViewController
+            
+            vc.name = name
+            if let path = path {
+                vc.path = "\(path)/\(name)/"
+            } else {
+                vc.path = "/\(name)/"
+            }
+            
+            self.show(vc, sender: self)
+        }
     }
     
     @objc func barItemFilePressed(_ sender: Any?) {
@@ -79,8 +110,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 print("text field was an empty")
                 return
             }
-            self.fileManager.createFile(withName: name)
-            self.elements = self.fileManager.listFiles()
+            if let path = self.path {
+                self.fileManager.createFile(withName: path + name)
+                self.elements = self.fileManager.listFiles(in: path)
+            } else {
+                self.fileManager.createFile(withName: name)
+                self.elements = self.fileManager.listFiles()
+            }
             self.tableView.reloadData()
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel)
@@ -101,9 +137,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 print("text field was an empty")
                 return
             }
-            print(name)
-            self.fileManager.createDirectory(atPath: name)
-            self.elements = self.fileManager.listFiles()
+            if let path = self.path {
+                self.fileManager.createDirectory(atPath: path + name)
+                self.elements = self.fileManager.listFiles(in: path)
+            } else {
+                self.fileManager.createDirectory(atPath: name)
+                self.elements = self.fileManager.listFiles()
+            }
             self.tableView.reloadData()
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel)
